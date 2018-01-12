@@ -1,0 +1,70 @@
+---
+title: "Hospital and Health Care in India"
+author: "Ashutosh"
+date: "1/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Hospital and HealthCare in India
+
+This project is to gain an insights on the hospital location and healthcare in India. It's a continuing project and we will just do an Exploratory Data Analysis of the datasets we can find
+
+```{r packages, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+
+```
+
+#### The data 
+
+We have a hospital directory of all the hospitals in India. Let's load it 
+
+```{r dataset, echo=FALSE}
+
+hospitals = read.csv('hospital.csv')
+
+```
+
+```{r, echo=FALSE}
+head(hospitals)
+str(hospitals)
+nrow(hospitals)
+ncol(hospitals)
+```
+
+So there are 23584 hospitals in this dataset and each hospital has 48 pieces of information. Let's take a look at the columns 
+
+```{r, echo=FALSE}
+colnames(hospitals)
+```
+
+```{r, echo=FALSE}
+sapply(hospitals, function(x) sum(is.na(x)) )
+```
+
+Since there are many columns which have missing value and we don't know about the dataset yet. Let's take a look at the columns 1 by one. First one is Hospital Category
+
+```{r, echo=FALSE}
+# colnames(hospitals)
+summary(hospitals$Hospital_Category)
+```
+
+We see that many of the missing values are present and we have generally 2 values  Private, Public/Government. Now let's take a look the names of hospitals which are set to 0 
+
+```{r, echo=FALSE}
+z0_hospitals = subset(hospitals,Hospital_Category == 0)
+head(z0_hospitals$Hospital_Name)
+```
+
+These  names look like private hospitals But we can't say for sure. For the time Being we will set the values as N/As
+
+```{r, echo=FALSE}
+hospitals[,"Hospital_Category"][hospitals[,"Hospital_Category"] == 0] <- NA
+summary(hospitals$Hospital_Category)
+```
+
